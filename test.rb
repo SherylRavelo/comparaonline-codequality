@@ -1,5 +1,5 @@
 # This class is used for logins
-class Login
+class User
   attr_reader :sessions, :users, :passwords
 
   # Receives a hash with usernames as keys and passwords as values
@@ -98,7 +98,7 @@ registered_users = {
   'user3' => 'pass3'
 }
 
-login = Login.new(registered_users)
+login = User.new(registered_users)
 
 login.register_user('user4', 'pass4');
 login.login('user4', 'pass4');
