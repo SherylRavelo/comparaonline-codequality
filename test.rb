@@ -21,16 +21,8 @@ class User
   end
 
   # Checks if user exists
-  def user_exists(user)
-    # Temp variable for storing the user if found
-    temp = ''
-    for i in users
-      if i == user
-        temp = user
-      end
-    end
-    exists = temp != '' && temp == user
-    exists
+  def user_exists(user)    
+    users.include? user
   end
 
   # Register user
@@ -41,7 +33,7 @@ class User
   end
 
   def remove_user(user)
-	index = users.find_index(user)
+    index = users.find_index(user)
     users[index] = nil
     passwords[index] = nil
     users.compact!
@@ -55,7 +47,7 @@ class User
   end
 
   def update_password(user, old_password, new_password)
-    # Check if the user exists    
+    # Check if the user exists
 	if user_exists(user)
 	  index = users.find_index(user)
       if passwords[index] == old_password
@@ -90,5 +82,3 @@ user.update_password('user3', 'pass3', 'pass5');
 user.login('user3', 'pass5');
 user.logout('user4');
 user.logout('user3');
-
-#puts registered_users
