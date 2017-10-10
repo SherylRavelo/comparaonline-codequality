@@ -55,14 +55,8 @@ class User
   end
 
   def update_password(user, old_password, new_password)
-    # First we check if the user exists
-    user_1 = ''
-    for i in users
-      if i == user
-        user_1 = user
-      end
-    end
-    if user_1 == user
+    # Check if the user exists    
+	if user_exists(user)
       index = idx(user, users)
       if passwords[index] == old_password
         passwords[index] = new_password
@@ -98,11 +92,11 @@ registered_users = {
   'user3' => 'pass3'
 }
 
-login = User.new(registered_users)
+user = User.new(registered_users)
 
-login.register_user('user4', 'pass4');
-login.login('user4', 'pass4');
-login.update_password('user3', 'pass3', 'pass5');
-login.login('user3', 'pass5');
-login.logout('user4');
-login.logout('user3');
+user.register_user('user4', 'pass4');
+user.login('user4', 'pass4');
+user.update_password('user3', 'pass3', 'pass5');
+user.login('user3', 'pass5');
+user.logout('user4');
+user.logout('user3');
