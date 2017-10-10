@@ -41,7 +41,7 @@ class User
   end
 
   def remove_user(user)
-    index = idx(user, users)
+	index = users.find_index(user)
     users[index] = nil
     passwords[index] = nil
     users.compact!
@@ -49,7 +49,7 @@ class User
   end
 
   def check_password(user, password)
-    index = idx(user, users)
+	index = users.find_index(user)
     password_correct = passwords[index] == password
     return password_correct
   end
@@ -57,7 +57,7 @@ class User
   def update_password(user, old_password, new_password)
     # Check if the user exists    
 	if user_exists(user)
-      index = idx(user, users)
+	  index = users.find_index(user)
       if passwords[index] == old_password
         passwords[index] = new_password
         return true
@@ -67,20 +67,10 @@ class User
   end
 
   def login(user, password)
-    index = idx(user, users)
+	index = users.find_index(user)
     if passwords[index] == password
       sessions << user
     end
-  end
-
-  # Gets index of an element in an array
-  def idx(element, array)
-    cont=0
-    for i in array
-      return cont if i == element
-      cont += 1
-    end
-    return cont
   end
 end
 
@@ -100,3 +90,5 @@ user.update_password('user3', 'pass3', 'pass5');
 user.login('user3', 'pass5');
 user.logout('user4');
 user.logout('user3');
+
+#puts registered_users
