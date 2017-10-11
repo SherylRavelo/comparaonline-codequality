@@ -1,71 +1,70 @@
 # This class is used for logins
 class User
-  attr_reader :sessions, :users, :passwords
+  attr_reader :sessions, :users
 
   # Receives a hash with usernames as keys and passwords as values
   def initialize(hash)
     @sessions = []
     @users = []
-    @passwords = []
-    hash.map do |k,v|
-      @users = @users + [k]
-      @passwords = @passwords + [v]
+	@users = hash
+  end
+  
+  # Check password
+  def check_password(user, password)
+	password_correct = users[user]
+	result = password == password_correct
+    return result
+  end
+  
+  # login users
+  def login(user, password)
+	if check_password(user, password)
+      sessions << user
     end
   end
 
+  #logout users
   def logout(user)
     sessions.each_with_index do |session, i|
       sessions[i] = nil if session == user
     end
     sessions.compact!
   end
-
-  # Checks if user exists
-  def user_exists(user)    
-    users.include? user
-  end
-
+ 
   # Register user
-  def register_user(user, password)
-    last_index = users.size
-    users[last_index] = user
-    passwords[last_index] = password
+  def register_user(user, password)    
+	if !user_exists(user)
+		users[user] = password
+	end
   end
 
+  # Delete users
   def remove_user(user)
     index = users.find_index(user)
     users[index] = nil
     passwords[index] = nil
     users.compact!
     passwords.compact!
-  end
+  end 
 
-  def check_password(user, password)
-	index = users.find_index(user)
-    password_correct = passwords[index] == password
-    return password_correct
-  end
-
+  # Update password
   def update_password(user, old_password, new_password)
     # Check if the user exists
 	if user_exists(user)
-	  index = users.find_index(user)
-      if passwords[index] == old_password
-        passwords[index] = new_password
+	  # Check password
+	  if check_password(user, old_password)
+		users[user] = new_password
         return true
       end
     end
     return false
   end
-
-  def login(user, password)
-	index = users.find_index(user)
-    if passwords[index] == password
-      sessions << user
-    end
+  
+  # Checks if user exists
+  def user_exists(user)
+    users.include? user
   end
 end
-
 
 
 registered_users = {
